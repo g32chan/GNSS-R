@@ -1,0 +1,41 @@
+================================================================================
+GNSS-R Raw Flow
+================================================================================
+
+Inputs:
+- Direct raw stream
+- Reflected raw stream
+
+Outpus:
+- GPS Time
+- List of satellites in view
+- Direct CNRs
+- Reflected CNRs
+
+Steps:
+- Acquisition
+- Tracking
+- Processing
+
+
+================================================================================
+GNSS-R Piksi Flow
+================================================================================
+
+Inputs:
+- GPS Time
+- List of satellites in view
+- Direct CNRs
+- Reflected CNRs
+
+Outputs:
+- Specular point
+- Scattering coefficient
+- Incident angle
+
+Steps:
+- Positions
+- Specular point
+- Incident angle
+- Scattering coefficient
+
