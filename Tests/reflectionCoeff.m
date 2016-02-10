@@ -1,4 +1,5 @@
-clear; close; clc
+clear; close all; clc
+
 theta=0:1:90;
 Vb=30;
 er=3.12+0.009*Vb;
@@ -24,3 +25,4 @@ xlabel('Incident angle [deg]')
 ylabel('Reflection')
 title(['Fresnel Components for V_{b} = 30' char(8240)])
 legend('Co-polarization', 'Cross-polarization', 'Brewster Angle')
+

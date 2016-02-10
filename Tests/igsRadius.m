@@ -1,7 +1,7 @@
 clear; close all; clc
 
 % Read data
-data = csvread('igs18605.sp3.csv');
+data = csvread('C:\Users\Gary\SkyDrive\Documents\WatSat\Payload\Data Processing\IGS\igs18605.sp3.csv');
 t = datestr(datetime(data(1,1), data(1,2), data(1,3)), 'mmmm dd, yyyy');
 prns = data(2,:);
 epochs = data(3,1);

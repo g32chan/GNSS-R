@@ -6,7 +6,8 @@ function [a, b, area] = gpsFootprint(lambda, h, e)
 % b: semi-minor axis [m]
 % area: area of footprint [m^2]
 
-b = sqrt(lambda*h./sin(e)+(lambda/2./sin(e)).^2);
+% First Fresnel Zone, Area of an Ellipse
+b = sqrt(lambda*h./sin(e) + (lambda/2./sin(e)).^2);
 a = b./sin(e);
 area = pi.*a.*b;
 end

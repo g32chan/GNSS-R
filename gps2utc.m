@@ -1,4 +1,4 @@
-function [t] = gps2utc(wn, tow, leapseconds)
+function t = gps2utc(wn, tow, leapseconds)
 if nargin < 3
     leapseconds = 17; % As of June 30, 2015
 end
