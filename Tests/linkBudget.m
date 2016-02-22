@@ -1,8 +1,6 @@
 clear; close all; clc
 
 parameters;
-Gr=3.7;             % Receiver gain [dB]
-Glna=33;            % LNA gain [dB]
 R=20200000;         % Distance [m]
 
 Gr=db2pow(Gr);      % Receiver gain []
@@ -10,8 +8,6 @@ Gr=db2pow(Gr);      % Receiver gain []
 Pr=EIRP*Gr*(lambda/4/pi/R)^2;   % Received power [W]
 Pr=pow2db(Pr);      % Received power [dBW], typical -160 dBW
 
-B=2e6;              % Bandwidth [Hz]
-F=3;                % Noise figure [dB]
 T0=290;             % Reference noise temperature [K]
 
 N=pow2db(noisepow(B,F,T0));     % Noise power [dBW]

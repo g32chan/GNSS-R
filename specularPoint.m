@@ -44,7 +44,7 @@ end
 
 % Calculate incident angle and test Snell's law
 try
-    theta = snell(R,T,S);
+    theta = snell(R, T, S);
 catch
     warning('Specular point does not satisfy Snell''s law');
     theta = -90;

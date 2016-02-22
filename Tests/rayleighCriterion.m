@@ -5,7 +5,7 @@ lambda=c/f;
 theta=0:1:90;
 figure
 for phase=[pi/8 pi/4 pi/2 pi]
-    h=lambda/4/pi*phase./sin(deg2rad(90-theta)).*100;
+    h=lambda/4/pi*phase./cos(deg2rad(theta)).*100;
     semilogy(theta,h)
     hold on
 end

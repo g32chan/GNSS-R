@@ -11,12 +11,8 @@ lambda=c/f;
 alpha=2*pi/lambda*imag(sqrt(e));
 d=1/2/alpha;
 thetab = rad2deg(atan(sqrt(e)));
-cs=cos(deg2rad(theta));
-sn=sin(deg2rad(theta));
-Rvv=(e.*cs-sqrt(e-sn.^2))./(e.*cs+sqrt(e-sn.^2));
-Rhh=(cs-sqrt(e-sn.^2))./(cs+sqrt(e-sn.^2));
-Rco=(Rvv+Rhh)/2;
-Rcs=(Rvv-Rhh)/2;
+[Rvv,Rhh]=fresnelCoeff(e,deg2rad(theta));
+[Rco,Rcs]=cocross(Rvv,Rhh);
 figure; hold
 plot(theta,real(-Rco))
 plot(theta,real(Rcs))
