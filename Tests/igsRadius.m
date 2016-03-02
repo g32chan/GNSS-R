@@ -1,7 +1,12 @@
 clear; close all; clc
 
+% Configure script
+filename = 'C:\Users\Gary\SkyDrive\Documents\WatSat\Payload\Data Processing\IGS\igr18862.sp3.csv';
+v = [1 7 8 11 13 17 28 30];
+time = 2;
+
 % Read data
-data = csvread('C:\Users\Gary\SkyDrive\Documents\WatSat\Payload\Data Processing\IGS\igs18605.sp3.csv');
+data = csvread(filename);
 t = datestr(datetime(data(1,1), data(1,2), data(1,3)), 'mmmm dd, yyyy');
 prns = data(2,:);
 epochs = data(3,1);
@@ -16,7 +21,6 @@ o = [0 0 0];
 for e = 1:epochs
     for s = 1:sats
         r(s,e) = dist3(o, data(s,e,:));
-%         r(s,e)=sqrt(data(s,e,1)^2+data(s,e,2)^2+data(s,e,3)^2);
     end
 end
 figure(1)
@@ -48,18 +52,18 @@ ylabel('WGS84 y-axis [km]');
 zlabel('WGS84 z-axis [km]');
 
 % Plot visible satellites
-v = [2 3 6 12 17 28];
 figure(3)
 hold on;
 grid on;
 plot3(slc(1), slc(2), slc(3), 'r*')
+time = time*4:time*4+2;
 for s = 1:sats
     if ismember(prns(s), v)
-        plot3(data(s,73:75,1), data(s,73:75,2), data(s,73:75,3), 'k')
-        d = dist3(slc, data(s,74,:));
+        plot3(data(s,time,1), data(s,time,2), data(s,time,3), 'k')
+        d = dist3(slc, data(s,time(2),:));
         disp(['Calculated pseudorange for satellite ' num2str(prns(s)) ' is ' num2str(d) ' km'])
     else
-        plot3(data(s,73:75,1), data(s,73:75,2), data(s,73:75,3), 'c')
+        plot3(data(s,time,1), data(s,time,2), data(s,time,3), 'c')
     end
 end
 surf(x,y,z)

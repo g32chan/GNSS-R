@@ -1,14 +1,12 @@
 clear; close all; clc
 
+parameters;
 theta=0:1:90;
 Vb=30;
 er=3.12+0.009*Vb;
 ei=0.04+0.005*Vb;
-e=er-1i*ei;
-c=3e8;
-f=1575.42e6;
-lambda=c/f;
-alpha=2*pi/lambda*imag(sqrt(e));
+e=er+1i*ei;
+alpha=k*imag(sqrt(e));
 d=1/2/alpha;
 thetab = rad2deg(atan(sqrt(e)));
 [Rvv,Rhh]=fresnelCoeff(e,deg2rad(theta));
