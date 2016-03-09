@@ -1,4 +1,5 @@
 function [S, theta] = specularPoint(R, T)
+% Modified from RT2S_Example1.m by Scott Gleason (2006)
 % T: Transmitter position in WGS84
 % R: Receiver position in WGS84
 % S: Specular point in WGS84

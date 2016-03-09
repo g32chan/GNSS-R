@@ -38,8 +38,9 @@ for s=1:18
     Rt=Ht/cos(deg2rad(theta(s)));  % [m]
     Rr=Hr/cos(deg2rad(theta(s)));  % [m]
     R=-pow2db(Rt^2*Rr^2);
-    
+
     sigma_hat(s)=-k-Gpr+N+SNR(s)-EIRP(s)-Gr(s)-S(s)-A(s)-R;
+%     sigma_hat(s)=-k-Gpr+N+SNR(s)-EIRP(s)-Gr(s)-S(s)-A(s)-R(s);
 end
 
 % SNR_hat=k+EIRP-N+sigma+Gpr+Gr+R+S+A;
@@ -48,7 +49,7 @@ figure
 plot(time,sigma,time,sigma_hat)
 xlabel('Second')
 ylabel('\sigma^0 [dB]')
-legend('Estimate in thesis','Calculated')
+legend('Estimate from thesis','Calculated')
 figure
 plot(time,abs(sigma-sigma_hat))
 xlabel('Second')
