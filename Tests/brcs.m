@@ -25,22 +25,22 @@ sigma_hat=zeros(size(sigma));
 % sigma=9.81;         % [dB]
 N=-142.2;           % Noise power [dBW]
 Gpr=pow2db(1023);   % Processing gain[dB]
-lambda=0.1904;      % Wavelength [m]
+lambda=299792458/1.57542e9;     % Wavelength [m]
 
 Ht=20200000;    % [m]
 Hr=680000;      % [m]
 
-N=pow2db(noisepow(2e6,2.5,290));
+% N=pow2db(noisepow(2e6,2.5,290));
 
 k=pow2db(2/3/(4*pi)^3*lambda^2);
 
 for s=1:18
-    Rt=Ht/cos(deg2rad(theta(s)));  % [m]
-    Rr=Hr/cos(deg2rad(theta(s)));  % [m]
-    R=-pow2db(Rt^2*Rr^2);
-
-    sigma_hat(s)=-k-Gpr+N+SNR(s)-EIRP(s)-Gr(s)-S(s)-A(s)-R;
-%     sigma_hat(s)=-k-Gpr+N+SNR(s)-EIRP(s)-Gr(s)-S(s)-A(s)-R(s);
+%     Rt=Ht/cos(deg2rad(theta(s)));  % [m]
+%     Rr=Hr/cos(deg2rad(theta(s)));  % [m]
+%     R=-pow2db(Rt^2*Rr^2);
+% 
+%     sigma_hat(s)=-k-Gpr+N+SNR(s)-EIRP(s)-Gr(s)-S(s)-A(s)-R;
+    sigma_hat(s)=-k-Gpr+N+SNR(s)-EIRP(s)-Gr(s)-S(s)-A(s)-R(s);
 end
 
 % SNR_hat=k+EIRP-N+sigma+Gpr+Gr+R+S+A;
@@ -50,6 +50,7 @@ plot(time,sigma,time,sigma_hat)
 xlabel('Second')
 ylabel('\sigma^0 [dB]')
 legend('Estimate from thesis','Calculated')
+
 figure
 plot(time,abs(sigma-sigma_hat))
 xlabel('Second')

@@ -1,9 +1,10 @@
 clear; close all; clc
 
-parameters;
+a = 6378137;
+f = 1/298.257223563;
+b = a*(1-f);
+
 theta=deg2rad(0:1:360);
-a=WGS84_a;
-b=WGS84_b;
 f=sqrt(a^2-b^2);
 x=a.*cos(theta);
 y=b.*sin(theta);

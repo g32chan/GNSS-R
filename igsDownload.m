@@ -28,7 +28,7 @@ end
 if exist(fname, 'file') == 2
     status = system(['7z e ' fname]);
     if status ~= 0
-        error('Error uncompressing')
+        error('Error decompressing')
     end
     if exist(name, 'file') == 2
         igsFile = name;
@@ -54,7 +54,7 @@ disp('Download complete')
 
 status = system(['7z e ' fname]);
 if status ~= 0
-    error('Error uncompressing')
+    error('Error decompressing')
 end
 if exist(name, 'file') == 2
     igsFile = name;

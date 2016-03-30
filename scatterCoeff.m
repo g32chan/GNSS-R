@@ -1,4 +1,4 @@
-function sigma = scatterCoeff(R, T, dir, ref)
+function [S, theta, sigma] = scatterCoeff(R, T, dir, ref)
 % R: Transmitter position in WGS84
 % T: Receiver position in WGS84
 % dir: SNR of direct signal
@@ -6,7 +6,9 @@ function sigma = scatterCoeff(R, T, dir, ref)
 % sigma: Scattering coefficient
 
 % Load common parameters
-parameters;
+c = 299792458;
+f = 1.57542e9;
+lambda = c/f;
 
 % Get specular point
 [S, theta] = specularPoint(R, T);
@@ -25,6 +27,9 @@ sigma = db2pow(ref-dir).*(Rt/Rd)^2.*(4*pi*Rr^2)./area;
 % sigma = db2pow(ref-dir).*4.*pi.*Rr^2;
 
 % % Calculate noise power and density
+% EIRP = 500;
+% B = 2e6;
+% 
 % N = noisepow(B,3,290);
 % N0 = N/B;
 % 

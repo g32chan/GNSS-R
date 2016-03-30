@@ -1,8 +1,17 @@
 clear; close all; clc
 
-parameters;
-R=20200000;         % GPS orbit [m]
-R2=700000;          % Receiver orbit [m]
+c = 299792458;      % Speed of light [m/s]
+f = 1575.42e6;      % Carrier frequency [Hz]
+lambda = c/f;       % Carrier wavelength [m]
+EIRP = 500;         % Transmitted power [W]
+B = 2e6;            % Bandwidth [Hz]
+F = 3;              % Antenna noise figure [dB]
+Gr = 3.7;           % Antenna gain [dB]
+Glna = 33;          % LNA gain [dB]
+T0 = 290;           % Reference temperature [K]
+
+R=20200000;             % GPS orbit [m]
+R2=700000;              % Receiver orbit [m]
 theta=deg2rad(0:1:89);  % Incident angle [rad]
 
 Gr=db2pow(Gr);      % Receiver gain []

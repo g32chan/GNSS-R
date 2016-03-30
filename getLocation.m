@@ -1,15 +1,15 @@
-function P = getLocation(t, PRN, sp3)
+function P = getLocation(t, PRN, igs)
 % Modified from precise_orbit_interp.m by Xiaofan Li (2008)
-% t: UTC time
+% t: GPS time [sec]
 % PRN: Satellite ID
-% sp3: SP3 data
+% igs: IGS data
 % P: Location of PRN at t in ECEF
 
-i = find(sp3.data(:,3) == PRN);
-X = sp3.data(i,4);
-Y = sp3.data(i,5);
-Z = sp3.data(i,6);
-time = sp3.data(i,2);
+i = find(igs.data(:,igs.col.prn) == PRN);
+X = igs.data(i,igs.col.X);
+Y = igs.data(i,igs.col.Y);
+Z = igs.data(i,igs.col.Z);
+time = igs.data(i,igs.col.tow);
 [~,idx] = min(abs(t - time));
 
 if idx < 5
@@ -19,7 +19,6 @@ elseif idx > length(time) - 4
 else
     k = idx-4:idx+4;
 end
-
 
 terms = 9;
 Nmeas = length(k);
@@ -31,16 +30,15 @@ Timei = time(k)/86400;
 
 sidereal_day = 0.99726956634;
 period = sidereal_day;
-W = 2 * pi / period;
+w = 2*pi/period;
 target = t/86400;
 N = (terms-1)/2;
 for n = 1:N
   j = 2+(n-1)*2;
-  NW = n*W;
-  A(:,j) = sin(NW*Timei);
-  A(:,j+1) = cos(NW*Timei);
-  B(j) = sin(NW*target);
-  B(j+1) = cos(NW*target);
+  A(:,j) = sin(n*w*Timei);
+  A(:,j+1) = cos(n*w*Timei);
+  B(j) = sin(n*w*target);
+  B(j+1) = cos(n*w*target);
 end
 
 X_coeffs = A\X(k);

@@ -1,6 +1,10 @@
 clear; close all; clc
 
-parameters;
+c = 299792458;      % Speed of light [m/s]
+f = 1575.42e6;      % Carrier frequency [Hz]
+w = 2*pi*f;         % Carrier frequency [rad]
+k = w/c;            % Wavenumber [rad/m]
+
 theta=0:1:90;
 Vb=30;
 er=3.12+0.009*Vb;
@@ -11,6 +15,7 @@ d=1/2/alpha;
 brewster = rad2deg(atan(sqrt(e)));
 [Rvv,Rhh]=fresnelCoeff(e,deg2rad(theta));
 [Rco,Rcs]=cocross(Rvv,Rhh);
+
 figure; hold
 plot(theta,real(-Rco))
 plot(theta,real(Rcs))

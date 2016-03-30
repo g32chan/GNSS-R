@@ -1,11 +1,14 @@
-clear; close all; clc
+% clear; close all; clc
 
-% Configure script
-filename = 'C:\Users\Gary\SkyDrive\Documents\WatSat\Payload\Data Processing\IGS\igr18862.sp3.csv';
-v = [1 7 8 11 13 17 28 30];
-time = 2;
+%% Configure script
+filename = 'C:\Users\Gary\SkyDrive\Documents\WatSat\Payload\Data Processing\IGS\igs18605.sp3.csv';
+v = [2 3 6 12 17 28];
+time = 18.25;
+% filename = 'C:\Users\Gary\SkyDrive\Documents\WatSat\Payload\Data Processing\IGS\igr18862.sp3.csv';
+% v = [1 7 8 11 13 17 28 30];
+% time = 2;
 
-% Read data
+%% Read data
 data = csvread(filename);
 t = datestr(datetime(data(1,1), data(1,2), data(1,3)), 'mmmm dd, yyyy');
 prns = data(2,:);
@@ -15,7 +18,7 @@ data(1:3,:) = [];
 data(:,4:end) = [];
 data = reshape(data,sats,epochs,3);
 
-% Plot distances
+%% Plot distances
 r = zeros(sats,epochs);
 o = [0 0 0];
 for e = 1:epochs
@@ -32,7 +35,7 @@ ylabel('Distance [km]');
 xlabel('Epoch [900 sec]');
 title(['GPS Satellite Orbits for ' t]);
 
-% Plot orbits
+%% Plot orbits
 slc_lla = [43.471916 -80.544992 0];
 slc = lla2ecef(slc_lla)./1e3;
 figure(2)
@@ -51,7 +54,7 @@ xlabel('WGS84 x-axis [km]');
 ylabel('WGS84 y-axis [km]');
 zlabel('WGS84 z-axis [km]');
 
-% Plot visible satellites
+%% Plot visible satellites
 figure(3)
 hold on;
 grid on;

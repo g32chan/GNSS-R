@@ -1,4 +1,4 @@
-function sp3 = read_sp3(filename)
+function igs = igsRead(filename)
 % Modified from read_sp3.m by David Wiese (2006)
 % filename: Name of SP3 file
 % sp3: Parsed data output
@@ -41,14 +41,14 @@ end
 
 fclose(fid);
 
-sp3.data = sp3_obs_all;
-sp3.col.wn = 1;
-sp3.col.tow = 2;
-sp3.col.prn = 3;
-sp3.col.X = 4;
-sp3.col.Y = 5;
-sp3.col.Z = 6;
-sp3.col.B = 7;
+igs.data = sp3_obs_all;
+igs.col.wn = 1;
+igs.col.tow = 2;
+igs.col.prn = 3;
+igs.col.X = 4;
+igs.col.Y = 5;
+igs.col.Z = 6;
+igs.col.B = 7;
 
 end
 
