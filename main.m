@@ -4,6 +4,7 @@
 clear; close all; clc
 format compact
 format long
+addpath('include')
 addpath('Tests')
 addpath('EKF')
 addpath('C:\Users\Gary\SkyDrive\Documents\WatSat\Payload\Data Processing')

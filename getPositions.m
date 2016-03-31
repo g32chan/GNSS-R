@@ -36,13 +36,15 @@ for i = 1:length(time)
     end
     satpos = zeros(3,length(PRNs));
     for j = 1:length(PRNs)
-        satpos(:,j) = getLocation(t-bias(idx),PRNs(j),igs); % t+130
+        satpos(:,j) = getLocation(t,PRNs(j),igs);
+%         satpos(:,j) = getLocation(t-bias(idx),PRNs(j),igs);
+%         satpos(:,j) = getLocation(t+130,PRNs(j),igs);
     end
     prCorr = bias(idx)*c;
     prAdj = temp(:,pr)-prCorr;
     [Rxyz(i,:), DOP] = leastSquarePos(satpos, prAdj);
-    if max(DOP) > 5
-        disp('DOP is bad')
+    if max(DOP) > 10
+        disp(['DOP is bad: ' num2str(max(DOP))])
     end
     Txyz = [Txyz; satpos'];
 end

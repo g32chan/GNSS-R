@@ -4,10 +4,12 @@ function [out, clk] = piksiParse(datafile)
 
 %% Import data
 [~, name, ext] = fileparts(datafile);
-disp(['Importing ' name ext '...'])
+fprintf('Importing %s%s...', name, ext)
 piksi = importData(datafile);
+fprintf('Done\n')
 
 %% Read input
+fprintf('Parsing Piksi file...')
 header = piksi.header;
 id = header.Identifier;
 data = piksi.data;
@@ -46,7 +48,7 @@ out.data = data;
 fields = fieldnames(header);
 clk.header = rmfield(header, fields(3:end));
 clk.data = unique(data(:,1:2),'rows');
-disp('Finished parsing Piksi file')
+fprintf('Done\n')
 
 end
 

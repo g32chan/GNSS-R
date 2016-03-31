@@ -40,7 +40,7 @@ end
 fh = fopen(fname, 'wb');
 jurl = java.net.URL(link);
 is = jurl.openStream;
-disp('Downloading IGS file...')
+fprintf('Downloading IGS file...')
 while true
     b = is.read;
     if b == -1
@@ -50,7 +50,7 @@ while true
 end
 is.close;
 fclose(fh);
-disp('Download complete')
+fprintf('Done\n')
 
 status = system(['7z e ' fname]);
 if status ~= 0
