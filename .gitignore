@@ -20,6 +20,7 @@ $RECYCLE.BIN/
 *.sp3
 *.grd
 EKF/
+EMwave/
 
 # =========================
 # Operating System Files

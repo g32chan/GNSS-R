@@ -1,14 +1,18 @@
-function P = getLocation(t, PRN, igs)
+function [P, clk] = getLocation(t, PRN, igs)
 % Modified from precise_orbit_interp.m by Xiaofan Li (2008)
 % t: GPS time [sec]
 % PRN: Satellite ID
 % igs: IGS data
 % P: Location of PRN at t in ECEF
+% B: Clock bias of PRN at t
+
+c = 299792458;
 
 i = find(igs.data(:,igs.col.prn) == PRN);
 X = igs.data(i,igs.col.X);
 Y = igs.data(i,igs.col.Y);
 Z = igs.data(i,igs.col.Z);
+bias = igs.data(i,igs.col.B);
 time = igs.data(i,igs.col.tow);
 [~,idx] = min(abs(t - time));
 
@@ -46,6 +50,17 @@ Y_coeffs = A\Y(k);
 Z_coeffs = A\Z(k);
 
 P = 1000*[B*X_coeffs B*Y_coeffs B*Z_coeffs];
+
+% Interpolate clock
+b = [];
+T = [];
+for i=1:length(bias)
+    if bias(i)~=999999.999999
+        b = [b, bias(i)];
+        T = [T, time(i)];
+    end
+end
+clk = interp1(T,b,t)*c*1e-6;
 
 end
 

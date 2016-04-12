@@ -1,5 +1,5 @@
-clear; close; clc
-c=3e8;
+clear; close all; clc
+c=299792458;
 f=1575.42e6;
 lambda=c/f;
 theta=0:1:90;

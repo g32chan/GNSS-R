@@ -1,4 +1,4 @@
-function [out, clk] = sirfParse(datafile, clkfile)
+function out = sirfParse(datafile)
 % filename: SiRF file name
 % out: Output data
 
@@ -6,7 +6,6 @@ function [out, clk] = sirfParse(datafile, clkfile)
 [~, name, ext] = fileparts(datafile);
 disp(['Importing ' name ext '...'])
 sirf = importData(datafile);
-clk = importData(clkfile);
 
 %% Get GPS time from filename
 v = datevec([name(9:14) name(16:21)], 'ddmmyyHHMMSS');
@@ -20,11 +19,6 @@ gpst = header.GPSTime;
 start = header.CNR1;
 fin = header.CNR10;
 data = sirf.data;
-
-%% Unit correction
-clk.data(:,clk.header.ToW) = clk.data(:,clk.header.ToW)/100;
-clk.data(:,clk.header.ClockBias) = clk.data(:,clk.header.ClockBias)/1e9;
-clk.data(:,clk.header.Est_GPSTime) = clk.data(:,clk.header.Est_GPSTime)/1000;
 
 %% Remove lines using elapsed time
 disp('Filtering data...')

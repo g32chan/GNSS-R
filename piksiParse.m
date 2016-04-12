@@ -1,4 +1,4 @@
-function [out, clk] = piksiParse(datafile)
+function out = piksiParse(datafile)
 % input: Piksi file name
 % out: Output data
 
@@ -45,9 +45,6 @@ out.wn = data(1,header.wn);
 out.tow = data(1,header.tow);
 out.PRN = unique(data(:,id));
 out.data = data;
-fields = fieldnames(header);
-clk.header = rmfield(header, fields(3:end));
-clk.data = unique(data(:,1:2),'rows');
 fprintf('Done\n')
 
 end

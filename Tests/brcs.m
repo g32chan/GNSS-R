@@ -15,41 +15,31 @@ S=data(:,8);
 sigma=data(:,9);
 sigma_hat=zeros(size(sigma));
 
-% SNR=-2.76;          % SNR [dB]
-% theta=13.24;        % Incident angle [deg]
-% A=90.31;            % Area [dB-m^2]
-% R=-285.25;          % Distance [dB-m]
-% EIRP=27.38;         % Transmitted power [dB]
-% Gr=11.59;           % Receiver gain [dB]
-% S=-1.63;            % [dB]
-% sigma=9.81;         % [dB]
-N=-142.2;           % Noise power [dBW]
-Gpr=pow2db(1023);   % Processing gain[dB]
-lambda=299792458/1.57542e9;     % Wavelength [m]
+N=-142.2;
+Gpr=10*log10(1023);
+lambda=299792458/1.57542e9;
+k=10*log10(((3/2)*(4*pi)^3)/(lambda^2));
 
-Ht=20200000;    % [m]
-Hr=680000;      % [m]
+Ht=20200000;
+Hr=680000;
 
-% N=pow2db(noisepow(2e6,2.5,290));
+% N=10*log10(1.38e-23*290*(10^(2.5/10)-1)*1e3);
 
-k=pow2db(2/3/(4*pi)^3*lambda^2);
-
-for s=1:18
-%     Rt=Ht/cos(deg2rad(theta(s)));  % [m]
-%     Rr=Hr/cos(deg2rad(theta(s)));  % [m]
-%     R=-pow2db(Rt^2*Rr^2);
+for t=1:18
+    sigma_hat(t)=k-Gpr+N+SNR(t)-EIRP(t)-Gr(t)-abs(S(t))-A(t)+abs(R(t));
+    
+%     Rt=Ht/cos(deg2rad(theta(t)));
+%     Rr=Hr/cos(deg2rad(theta(t)));
+%     R=-10*log10(Rt^2*Rr^2);
 % 
-%     sigma_hat(s)=-k-Gpr+N+SNR(s)-EIRP(s)-Gr(s)-S(s)-A(s)-R;
-    sigma_hat(s)=-k-Gpr+N+SNR(s)-EIRP(s)-Gr(s)-S(s)-A(s)-R(s);
+%     sigma_hat(t)=k-Gpr+N+SNR(t)-EIRP(t)-Gr(t)-abs(S(t))-A(t)+abs(R);
 end
-
-% SNR_hat=k+EIRP-N+sigma+Gpr+Gr+R+S+A;
 
 figure
 plot(time,sigma,time,sigma_hat)
 xlabel('Second')
 ylabel('\sigma^0 [dB]')
-legend('Estimate from thesis','Calculated')
+legend('Estimate from thesis','Calculated','location','best')
 
 figure
 plot(time,abs(sigma-sigma_hat))

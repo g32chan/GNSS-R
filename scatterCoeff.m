@@ -3,6 +3,8 @@ function [S, theta, sigma] = scatterCoeff(R, T, dir, ref)
 % T: Receiver position in WGS84
 % dir: SNR of direct signal
 % ref: SNR of reflected signal
+% S: Specular point in WGS84
+% theta: Incident angle [deg]
 % sigma: Scattering coefficient
 
 % Load common parameters
