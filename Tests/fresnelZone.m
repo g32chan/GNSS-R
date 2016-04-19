@@ -15,5 +15,5 @@ semilogy(E, A1, E, A2, E, A3);
 grid on;
 title('Scattering Area vs. Elevation Angle');
 legend('h = 5m', 'h = 30m', 'h = 700km');
-xlabel('Elevation Angle [deg]');
+xlabel('Elevation Angle, \gamma [deg]');
 ylabel('Area [m^2]');

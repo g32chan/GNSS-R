@@ -38,10 +38,15 @@ lla = ecef2lla(R.data(:,2:4));
 figure
 plot(lla(:,2),lla(:,1),target_lla(2),target_lla(1),'o')
 
-% [S, theta, sigma] = scatterCoeff(R, T, dir, ref);
+% [S, theta, sigma0] = scatterCoeff(R, T, dir, ref);
 
 %% Infer Reflection Surface
-
+mss = 0.002;
+sigma = 0.01;
+L = 3.3;
+q = qvec(R, T, S);
+Rcs = invKAGO(q, mss);
+e = invFresnel(Rcs, theta);
 
 %% Add to map
 res = 1;    % Cells per degree

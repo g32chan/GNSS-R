@@ -20,8 +20,8 @@ figure; hold
 plot(theta,real(-Rco))
 plot(theta,real(Rcs))
 plot(real(brewster)*ones(91),linspace(0,1,91),'k')
-xlabel('Incident angle [deg]')
-ylabel('Reflection')
+xlabel('Incident angle, \theta [deg]')
+ylabel('Reflection Coefficient, \Re')
 title(['Fresnel Components for V_{b} = 30' char(8240)])
-legend('Co-polarization', 'Cross-polarization', 'Brewster Angle')
+legend('Co-polarization', 'Cross-polarization', 'Brewster Angle','location','best')
 

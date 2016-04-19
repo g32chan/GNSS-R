@@ -19,8 +19,9 @@ z = satpos(:,header.Z)*1e3;
 pos = getLocation(tow,sv,igsData);
 
 figure; hold on
-plot(t,x,t,y,t,z)
-plot(tow,pos(1),'bx',tow,pos(2),'rx',tow,pos(3),'gx')
+% plot(t,x,t,y,t,z)
+plot(t,x,'.-',t,y,'.-',t,z,'.-')
+plot(tow,pos(1),'bx',tow,pos(2),'rx',tow,pos(3),'gx','MarkerSize',10)
 legend('X','Y','Z','location','best')
 ylabel('ECEF coordinate')
 xlabel('Time of Week')

@@ -2,8 +2,8 @@ clear; close all; clc
 
 N = 5000;       % number of points
 L = 2000;       % rough surface length
-h = 0.08;        % rms height
-lc = 3.3;       % correlation length
+h = 0.25;       % rms height
+lc = 5.5;       % correlation length
 
 lambda = 299792458/1.57542e9;  % wavelength
 lam_eff = lambda/2;
@@ -64,12 +64,37 @@ if dim == 2
     [hdf,bc,h_hat] = hdf2D(f,bins,'hist');
 end
 
+%% Isotropic
+beta = -90:1:90;
+beta0 = atan(sqrt(mss));
+% beta0 = deg2rad(5);
+cot = 1/tan(beta0)^2;
+sigma = cot*exp(-(tan(deg2rad(beta))/tan(beta0)).^2);
+
+plotKAGO(beta, sigma)
+
 %% Belmonte
 e = 4;
 L1 = 5.5;
-L2 = 0.5;   %0.5-5m
-mss = 2*(h/L1)^2;
+L2 = 5.5;   %0.5-5m
+for h = [0.08 0.25]
+    for inc = [0 45 60]
+        mss = 2*h^2/L1/L2;
 
-theta = -90:1:90;
-[Rvv,Rhh]=fresnelCoeff(e,deg2rad(theta));
-[~,Rcs]=cocross(Rvv,Rhh);
+        theta = -90:1:90;
+        beta = abs(theta-inc)/2;    % angle to surface normal
+        beta0 = abs(theta+inc)/2;   % angle to scattering vector
+
+        [Rvv,Rhh] = fresnelCoeff(e,deg2rad(beta0));
+        [~,Rcs] = cocross(Rvv,Rhh);
+
+        dir = qdir(inc,theta);
+        q = k*dir;
+        qh = q.*sin(deg2rad(beta));
+        qz = q.*cos(deg2rad(beta));
+
+        sigma = (abs(Rcs).^2).*((q./qz).^4)/2/mss.*exp(-((qh./qz).^2)/2/mss);
+
+        plotKAGO(theta, sigma)
+    end
+end
