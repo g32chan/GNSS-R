@@ -1,6 +1,6 @@
 function plotKAGO(theta, sigma)
-% theta: scattering angle vector
-% sigma: scattering coefficient vector
+% theta: scattering angles
+% sigma: scattering coefficients
 
 nfloor = -20*ones(1,length(sigma));
 figure; hold on
@@ -17,6 +17,8 @@ ax.XAxis.MinorTickValues = -100:10:100;
 ax.YAxis.MinorTickValues = -100:10:100;
 grid on
 grid minor
+xlabel('Scattering Angle, \beta [deg]')
+ylabel('Radar Cross Section, \sigma^0 [dB]')
 
 
 end

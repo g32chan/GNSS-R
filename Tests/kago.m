@@ -14,7 +14,10 @@ mss = 2*(h/lc)^2;
 lim = 2*pi*h/lam_eff;
 if lc/lam_eff < 10 || lc/h < 10
     warning('large surface curvature')
+elseif k*h < 2
+    warning('not within KAGO limit')
 end
+
 
 %% Tsang
 nr = 1;         % number of surface realizations
@@ -67,9 +70,9 @@ end
 %% Isotropic
 beta = -90:1:90;
 beta0 = atan(sqrt(mss));
-% beta0 = deg2rad(5);
+% beta0 = deg2rad(40);
 cot = 1/tan(beta0)^2;
-sigma = cot*exp(-(tan(deg2rad(beta))/tan(beta0)).^2);
+sigma = cot*exp(-(tand(beta)/tan(beta0)).^2);
 
 plotKAGO(beta, sigma)
 
@@ -78,23 +81,37 @@ e = 4;
 L1 = 5.5;
 L2 = 5.5;   %0.5-5m
 for h = [0.08 0.25]
-    for inc = [0 45 60]
+    for inc = 0%[0 45 60]
         mss = 2*h^2/L1/L2;
-
+        
         theta = -90:1:90;
         beta = abs(theta-inc)/2;    % angle to surface normal
         beta0 = abs(theta+inc)/2;   % angle to scattering vector
-
+        
         [Rvv,Rhh] = fresnelCoeff(e,deg2rad(beta0));
         [~,Rcs] = cocross(Rvv,Rhh);
-
+        
         dir = qdir(inc,theta);
         q = k*dir;
-        qh = q.*sin(deg2rad(beta));
-        qz = q.*cos(deg2rad(beta));
-
-        sigma = (abs(Rcs).^2).*((q./qz).^4)/2/mss.*exp(-((qh./qz).^2)/2/mss);
-
+%         q = 2*pi/lam_eff*dir;
+        qh = q(1,:);
+        qz = q(2,:);
+        qmag = sqrt(qh.^2+qz.^2);
+        
+        sigma = (Rcs.^2).*((qmag./qz).^4)/2/mss.*exp(-((-qh./qz).^2)/2/mss);
+        
         plotKAGO(theta, sigma)
     end
 end
+
+%% Z-V
+T = [-11178791.991294 -13160191.204988 20341528.127540];
+R = [-4069896.7033860330 -3583236.9637350840 4527639.2717581640];
+[S, theta] = specularPoint(R, T);
+q = qvec(R, T, S);
+
+e = 4;
+[Rvv,Rhh] = fresnelCoeff(e,deg2rad(theta));
+[~,Rcs] = cocross(Rvv,Rhh);
+
+sigma = (Rcs^2)*((norm(q)/q(3))^4)/2/mss*exp(-((-q(1)/q(3))^2+(-q(2)/q(3))^2)/2/mss);

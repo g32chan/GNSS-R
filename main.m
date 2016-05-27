@@ -2,8 +2,6 @@
 % Dependencies:
 %   7-zip: Decompresses downloaded IGS files
 clear; close all; clc
-format compact
-format long
 addpath('include')
 addpath('Tests')
 addpath('EKF')
@@ -41,11 +39,12 @@ plot(lla(:,2),lla(:,1),target_lla(2),target_lla(1),'o')
 % [S, theta, sigma0] = scatterCoeff(R, T, dir, ref);
 
 %% Infer Reflection Surface
-mss = 0.002;
 sigma = 0.01;
 L = 3.3;
+% mss = 0.002;
+mss = 2*(sigma/L)^2;
 q = qvec(R, T, S);
-Rcs = invKAGO(q, mss);
+Rcs = invKAGO(sigma0, q, mss);
 e = invFresnel(Rcs, theta);
 
 %% Add to map

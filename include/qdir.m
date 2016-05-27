@@ -1,17 +1,12 @@
-function q = qdir(inc, scatt)
-% inc: incident angle [deg]
-% scatt: scattering angle(s) [deg]
-% q: normalized magnitude of scattering vector(s)
+function q = qdir(i, s)
+% i: incident angle [deg]
+% s: scattering angles [deg]
+% q: scattering vectors
 
-i = deg2rad(inc);
-s = deg2rad(scatt);
-qx = sin(s)-sin(i);
-qy = cos(s)+cos(i);
+qx = sind(s)-sind(i);
+qy = cosd(s)+cosd(i);
 
-q = zeros(1,length(s));
-for n = 1:length(s)
-    q(n) = norm([qx(n) qy(n)]);
-end
+q = [qx; qy];
 
 end
 

@@ -4,14 +4,18 @@ function q = qvec(R, T, S)
 % S: specular point location in ECEF
 % q: scattering vector
 
+% convert to local coordinates
+Rl = ecef2enu(R, S);
+Tl = ecef2enu(T, S);
+Sl = ecef2enu(S, S);
+
 c = 299792458;
 f = 1.57542e9;
-lambda = c/f;
 
-RS_unit = (R-S)./norm(R-S);
-TS_unit = (T-S)./norm(T-S);
+RS_unit = (Rl-Sl)./norm(Rl-Sl);
+TS_unit = (Tl-Sl)./norm(Tl-Sl);
 
-q = 2*pi/lambda*(TS_unit+RS_unit);
+q = 2*pi*f/c*(TS_unit+RS_unit);
 
 end
 
