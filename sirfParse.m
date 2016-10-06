@@ -1,14 +1,14 @@
-function out = sirfParse(datafile)
+function out = sirfParse(filename)
 % filename: SiRF file name
 % out: Output data
 
 %% Import data
-[~, name, ext] = fileparts(datafile);
-disp(['Importing ' name ext '...'])
-sirf = importData(datafile);
+[~, name, ext] = fileparts(filename);
+fprintf('Importing %s%s...', name, ext)
+sirf = importData(filename);
 
 %% Get GPS time from filename
-v = datevec([name(9:14) name(16:21)], 'ddmmyyHHMMSS');
+v = datevec([name(1:6) name(8:13)], 'ddmmyyHHMMSS');
 t = datetime(v, 'TimeZone', 'UTC');
 [wn, tow] = utc2gps(t);
 
@@ -21,8 +21,17 @@ fin = header.CNR10;
 data = sirf.data;
 
 %% Remove lines using elapsed time
-disp('Filtering data...')
 data(data(:,gpst)-tow<0,:) = [];
+
+%% Filter GPS data
+PRNs = unique(data(:,id));
+GPS = PRNs(PRNs<64);
+GLONASS = PRNs(PRNs>=64);
+
+for i = 1:length(GLONASS)
+    PRN = GLONASS(i);
+    data(data(:,id)==PRN,:) = [];
+end
 
 %% Average non-zero CNRs
 data(mode(data(:,start:fin),2)==0,:) = [];
@@ -36,15 +45,8 @@ for i = 1:10
 end
 header.CNR = size(data,2);
 
-%% Filter GPS data
-PRNs = unique(data(:,id));
-GPS = PRNs(PRNs<64);
-GLONASS = PRNs(PRNs>=64);
-
-for i = 1:length(GLONASS)
-    PRN = GLONASS(i);
-    data(data(:,id)==PRN,:) = [];
-end
+%% Round time to nearest second
+data(:,gpst) = round(data(:,gpst));
 
 %% Prepare output
 out.header = header;
@@ -52,7 +54,7 @@ out.wn = wn;
 out.tow = tow;
 out.PRN = GPS;
 out.data = data;
-disp('Finished parsing SiRF file')
+fprintf('Done\n')
 
 end
 

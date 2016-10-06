@@ -30,6 +30,7 @@ if exist(name, 'file') == 0
     end
 end
 [Z, refvec] = egm96geoid(1);
+figure
 h = axesm('MapProjection', 'eqdazim');
 setm(h, 'origin', [90,0,0]);
 setm(h, 'maplatlimit', [45 90]);

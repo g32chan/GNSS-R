@@ -3,11 +3,13 @@ function igs = igsRead(filename)
 % filename: Name of SP3 file
 % sp3: Parsed data output
 
+%% Check file
 fid = fopen(filename);
 if fid == -1
     error('Cannot open file')
 end
 
+%% Read header
 for i = 1:23
     currLine = fgetl(fid);
     if i == 3
@@ -17,6 +19,8 @@ for i = 1:23
     end
 end
 
+%% Read data
+fprintf('Importing IGS data...')
 eof = 0;
 i = 0;
 while eof ~= 1
@@ -41,6 +45,7 @@ end
 
 fclose(fid);
 
+%% Prepare output
 igs.data = sp3_obs_all;
 igs.col.wn = 1;
 igs.col.tow = 2;
@@ -49,6 +54,7 @@ igs.col.X = 4;
 igs.col.Y = 5;
 igs.col.Z = 6;
 igs.col.B = 7;
+fprintf('Done\n')
 
 end
 

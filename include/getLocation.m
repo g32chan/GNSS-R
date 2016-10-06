@@ -4,17 +4,17 @@ function [P, clk] = getLocation(t, PRN, igs)
 % PRN: Satellite ID
 % igs: IGS data
 % P: Location of PRN at t in ECEF
-% B: Clock bias of PRN at t
+% clk: Clock bias of PRN at t
 
 c = 299792458;
 
-i = find(igs.data(:,igs.col.prn) == PRN);
-X = igs.data(i,igs.col.X);
-Y = igs.data(i,igs.col.Y);
-Z = igs.data(i,igs.col.Z);
-bias = igs.data(i,igs.col.B);
-time = igs.data(i,igs.col.tow);
-[~,idx] = min(abs(t - time));
+i = find(igs.data(:, igs.col.prn) == PRN);
+X = igs.data(i, igs.col.X);
+Y = igs.data(i, igs.col.Y);
+Z = igs.data(i, igs.col.Z);
+bias = igs.data(i, igs.col.B);
+time = igs.data(i, igs.col.tow);
+[~, idx] = min(abs(t - time));
 
 if idx < 5
     k = 1:9;
@@ -54,13 +54,13 @@ P = 1000*[B*X_coeffs B*Y_coeffs B*Z_coeffs];
 % Interpolate clock
 b = [];
 T = [];
-for i=1:length(bias)
-    if bias(i)~=999999.999999
+for i = 1:length(bias)
+    if bias(i) ~= 999999.999999
         b = [b, bias(i)];
         T = [T, time(i)];
     end
 end
-clk = interp1(T,b,t)*c*1e-6;
+clk = interp1(T, b, t) * c * 1e-6;
 
 end
 

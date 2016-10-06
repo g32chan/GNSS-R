@@ -1,4 +1,4 @@
-function [S, theta, sigma] = scatterCoeff(R, T, dir, ref)
+function [S, theta, sigma, area] = scatterCoeff(R, T, dir, ref)
 % R: Transmitter position in WGS84
 % T: Receiver position in WGS84
 % dir: SNR of direct signal
@@ -22,10 +22,10 @@ Rt = dist3(T, S);
 R_lla = ecef2lla(R);
 
 % Calculate reflection area
-[~, ~, area] = gpsFootprint(lambda, R_lla(3), deg2rad(90-theta));
+[~, ~, area] = gpsFootprint(lambda, R_lla(3)-337, deg2rad(90-theta));
 
 % Calculate sigma
-sigma = db2pow(ref-dir).*(Rt/Rd)^2.*(4*pi*Rr^2)./area;
+sigma = db2pow(ref)./db2pow(dir).*(Rt/Rd)^2.*(4*pi*Rr^2)./area;
 % sigma = db2pow(ref-dir).*4.*pi.*Rr^2;
 
 % % Calculate noise power and density

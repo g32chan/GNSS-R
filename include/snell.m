@@ -4,7 +4,7 @@ function theta = snell(R, T, S)
 % S: Specular point in WGS84
 % theta: Incident angle [deg]
 
-tol = 0.001;	% Tolerance [deg]
+tol = 0.1;	% Tolerance [deg]
 
 RS_unit = (R-S)./norm(R-S);
 TS_unit = (T-S)./norm(T-S);
@@ -16,7 +16,8 @@ thetaT = rad2deg(acos(dot(TS_unit, S_unit)));
 if (abs(thetaR-thetaT) < tol) 
     theta = mean([thetaR thetaT]);	% Return average
 else
-    error('Specular point does not satisfy Snell''s law');
+    warning('Specular point does not satisfy Snell''s law');
+    theta = -90;
 end
 
 end

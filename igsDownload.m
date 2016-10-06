@@ -20,7 +20,7 @@ ext = '.Z';
 link = ['https://igscb.jpl.nasa.gov/igscb/product/' num2str(wn) '/' name ext];
 fname = [pwd '\' name ext];
 if exist(name, 'file') == 2
-    disp('IGS file already exists')
+    fprintf('IGS file already exists\n')
     igsFile = name;
     return
 end
@@ -28,6 +28,7 @@ end
 if exist(fname, 'file') == 2
     status = system(['7z e ' fname]);
     if status ~= 0
+        delete(fname);
         error('Error decompressing')
     end
     if exist(name, 'file') == 2
@@ -37,10 +38,15 @@ if exist(fname, 'file') == 2
     end
 end
 
+fprintf('Downloading IGS file...')
 fh = fopen(fname, 'wb');
 jurl = java.net.URL(link);
-is = jurl.openStream;
-fprintf('Downloading IGS file...')
+try
+    is = jurl.openStream;
+catch
+    fclose(fh);
+    error('IGS file not available at this time');
+end
 while true
     b = is.read;
     if b == -1

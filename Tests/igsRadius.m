@@ -1,9 +1,12 @@
-% clear; close all; clc
+clear; close all; clc
 
 %% Configure script
-filename = 'C:\Users\Gary\SkyDrive\Documents\WatSat\Payload\Data Processing\IGS\igs18605.sp3.csv';
-v = [2 3 6 12 17 28];
-time = 18.25;
+filename = 'C:\Users\Gary\SkyDrive\Documents\WatSat\Payload\Data Processing\IGS\igr19031.sp3.csv';
+v = [7 8 9 16 21 23 26 27 30];
+time = 14.75;
+% filename = 'C:\Users\Gary\SkyDrive\Documents\WatSat\Payload\Data Processing\IGS\igs18605.sp3.csv';
+% v = [2 3 6 12 17 28];
+% time = 18.25;
 % filename = 'C:\Users\Gary\SkyDrive\Documents\WatSat\Payload\Data Processing\IGS\igr18862.sp3.csv';
 % v = [1 7 8 11 13 17 28 30];
 % time = 2;

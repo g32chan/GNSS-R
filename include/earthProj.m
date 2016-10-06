@@ -8,7 +8,7 @@ f = 1/298.257223563;
 e = sqrt(2*f-f^2);
 
 % Calculate latitude
-theta = asin(pos(3)/norm(pos)); % Z-axis / norm
+theta = asin(pos(3)./norm(pos)); % Z-axis / norm
 
 % Calculate radius
 temp1 = 1 - e^2;
