@@ -60,7 +60,11 @@ for i = 1:length(bias)
         T = [T, time(i)];
     end
 end
-clk = interp1(T, b, t) * c * 1e-6;
+if ~isempty(T) || ~isempty(b)
+    clk = interp1(T, b, t) * c * 1e-6;
+else
+    clk = 0;
+end
 
 end
 

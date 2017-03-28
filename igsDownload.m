@@ -3,6 +3,7 @@ function igsFile = igsDownload(wn, tow)
 % tow: time of week [sec]
 % igsFile: IGS file name
 
+cd('IGS')
 today = datetime('now', 'TimeZone', 'UTC');
 utc = gps2utc(wn, tow);
 d = today - utc;
@@ -21,7 +22,8 @@ link = ['https://igscb.jpl.nasa.gov/igscb/product/' num2str(wn) '/' name ext];
 fname = [pwd '\' name ext];
 if exist(name, 'file') == 2
     fprintf('IGS file already exists\n')
-    igsFile = name;
+    igsFile = ['IGS\' name];
+    cd ../
     return
 end
 
@@ -32,7 +34,8 @@ if exist(fname, 'file') == 2
         error('Error decompressing')
     end
     if exist(name, 'file') == 2
-        igsFile = name;
+        igsFile = ['IGS\' name];
+        cd ../
         delete(fname);
         return
     end
@@ -45,6 +48,7 @@ try
     is = jurl.openStream;
 catch
     fclose(fh);
+    delete(fname);
     error('IGS file not available at this time');
 end
 while true
@@ -63,7 +67,8 @@ if status ~= 0
     error('Error decompressing')
 end
 if exist(name, 'file') == 2
-    igsFile = name;
+    igsFile = ['IGS\' name];
+    cd ../
     delete(fname);
 else
     error('File not found');

@@ -6,6 +6,10 @@ function [R, T, DOP] = getPositions(input, igs, clk)
 % T: Transmitter positions
 % DOP: Dilution of precision
 
+if nargin < 3
+    clk = [];
+end
+
 c = 299792458;
 
 header = input.header;
@@ -46,9 +50,15 @@ for i = 1:length(time)
     Txyz = [Txyz; satpos'];
     
     % Calculate clock corrections
-    idx = clk.data(:, clk.header.ToW) == t;
-    clkBias = clk.data(idx, clk.header.ClockBias) * c;
-    clkBias = repmat(clkBias, size(satBias));
+    clkBias = [];
+    if ~isempty(clk)
+        idx = clk.data(:, clk.header.ToW) == t;
+        clkBias = clk.data(idx, clk.header.ClockBias) * c;
+        clkBias = repmat(clkBias, size(satBias));
+    end
+    if isempty(clkBias)
+        clkBias = zeros(size(satBias));
+    end
     
     % Calculate receiver location
     prAdj = temp(:, pr) + satBias - clkBias;
@@ -63,8 +73,15 @@ for i = 1:length(time)
     end
 end
 
+%% Interpolate missing data
+first = min(time);
+last = max(time);
+timevec = (first:1:last)';
+Rxyzb = interp1(time, Rxyz, timevec, 'pchip');
+DOP = interp1(time, DOP, timevec, 'pchip');
+
 %% Prepare output
-R.data = [round(time) Rxyz];
+R.data = [round(timevec) Rxyzb];
 R.header.time = 1;
 R.header.X = 2;
 R.header.Y = 3;

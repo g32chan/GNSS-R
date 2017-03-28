@@ -1,20 +1,31 @@
-function e = invFresnel(R, theta)
+function e = invFresnel(R, S)
 % R: Fresnel reflection coefficient
-% theta: incident angle [deg]
+% S: specular data
 % e: dielectric constant
 
+e = zeros(size(S.data, 1), 1);
+
 tol = 1e-4;
-e = 5;
 K = 10;
 
-[Rvv,Rhh]=fresnelCoeff(e,deg2rad(theta));
-[~,Rcs]=cocross(Rvv,Rhh);
-
-while abs(R-Rcs) > tol
-    e = e+K*(R-Rcs);
+for i = 1:size(S.data, 1)
+    if R(i) > 1
+        error('Out of bounds');
+    end
     
-    [Rvv,Rhh]=fresnelCoeff(e,deg2rad(theta));
+    e(i) = 5;
+    theta = S.data(i, S.header.theta);
+    
+    [Rvv,Rhh]=fresnelCoeff(e(i),theta);
     [~,Rcs]=cocross(Rvv,Rhh);
+    
+    while abs(R(i)-Rcs) > tol
+        e(i) = e(i)+K*(R(i)-Rcs);
+
+        [Rvv,Rhh]=fresnelCoeff(e(i),theta);
+        [~,Rcs]=cocross(Rvv,Rhh);
+    end
 end
+
 end
 

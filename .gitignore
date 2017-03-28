@@ -20,6 +20,8 @@ $RECYCLE.BIN/
 *.sp3
 *.grd
 *.kml
+*.dat
+*.csv
 EKF/
 EMwave/
 

@@ -13,7 +13,7 @@ if flag
     c = 299792458;              % Speed of light [m/s]
     omega = 7.2921151467e-5;	% Earth rotation rate [rad/s]
     
-    iter = 7;
+    iter = 10;
     
     pos = zeros(4, 1);
     sats = size(satpos, 2);

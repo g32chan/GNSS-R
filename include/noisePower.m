@@ -1,5 +1,5 @@
-function npow = noisepow(nbw, nf, reftemp)
-% nbw: Bandwidth [Hz]
+function npow = noisePower(nbw, nf, reftemp)
+% nbw: Noise bandwidth [Hz]
 % nf: Noise figure [dB]
 % reftemp: Reference noise temperature [K]
 % npow: Noise power [W]

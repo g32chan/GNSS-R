@@ -3,14 +3,14 @@ function plotLLA(time, lla, target)
 % lla: lat/lon/alt vector
 % target: target location
 
-figure
+figure(1)
 set(gcf, 'units', 'normalized', 'outerposition', [0 0 1 1])
 
 subplot(2,2,1)
 plot(lla(:,2),lla(:,1),target(2),target(1),'o', 'MarkerFaceColor', 'red')
-x = [0.18 0.15];
-y = [0.65 0.62];
-annotation('textarrow', x, y, 'String', 'Expected receiver location', 'FontSize', 16)
+% x = [0.18 0.15];
+% y = [0.65 0.62];
+% annotation('textarrow', x, y, 'String', 'Expected receiver location', 'FontSize', 16)
 title('Target')
 xlabel('Longitude [deg]')
 ylabel('Latitude [deg]')

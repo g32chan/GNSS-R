@@ -14,18 +14,14 @@ def getArguments():
 def main():
     args = getArguments()
     file = open(args.file, 'r')
-    out = open(args.file.split('.')[0] + '_noLabels.kml', 'wb')
+    out = open(args.file + '.csv', 'wb')
     
     for line in file:
-        if '<name>Point' in line:
-            continue
-        out.write(line)
-    
-    file.close()
-    out.close()
-    
-    os.remove(args.file)
-    os.rename(args.file.split('.')[0] + '_noLabels.kml', args.file)
+        temp = line.strip().split(' ');
+        for x in temp:
+            out.write(x)
+            out.write(',')
+        out.write('\r\n')
 
 if __name__ == '__main__':
     main()

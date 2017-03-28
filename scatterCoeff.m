@@ -1,19 +1,16 @@
-function [S, theta, sigma, area] = scatterCoeff(R, T, dir, ref)
+function [S, theta, sigma, area] = scatterCoeff(R, T, dir, ref, e)
 % R: Transmitter position in WGS84
 % T: Receiver position in WGS84
 % dir: SNR of direct signal
 % ref: SNR of reflected signal
+% e: Elevation above sea level [m]
 % S: Specular point in WGS84
 % theta: Incident angle [deg]
 % sigma: Scattering coefficient
-
-% Load common parameters
-c = 299792458;
-f = 1.57542e9;
-lambda = c/f;
+% area: Reflection footprint [m^2]
 
 % Get specular point
-[S, theta] = specularPoint(R, T);
+[S, theta] = specularPoint(R, T, e);
 
 % Calculate distances
 Rd = dist3(R, T);
@@ -22,11 +19,15 @@ Rt = dist3(T, S);
 R_lla = ecef2lla(R);
 
 % Calculate reflection area
-[~, ~, area] = gpsFootprint(lambda, R_lla(3)-337, deg2rad(90-theta));
+area = gpsFootprint(R_lla(3)-e, 90-theta, 1);
 
 % Calculate sigma
 sigma = db2pow(ref)./db2pow(dir).*(Rt/Rd)^2.*(4*pi*Rr^2)./area;
+
 % sigma = db2pow(ref-dir).*4.*pi.*Rr^2;
+% if sigma <= 0
+%     error('Sigma less than zero')
+% end
 
 % % Calculate noise power and density
 % EIRP = 500;
