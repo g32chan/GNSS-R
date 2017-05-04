@@ -19,11 +19,20 @@ for i = 1:size(S.data, 1)
     [Rvv,Rhh]=fresnelCoeff(e(i),theta);
     [~,Rcs]=cocross(Rvv,Rhh);
     
+    iter = 0;
     while abs(R(i)-Rcs) > tol
         e(i) = e(i)+K*(R(i)-Rcs);
 
         [Rvv,Rhh]=fresnelCoeff(e(i),theta);
         [~,Rcs]=cocross(Rvv,Rhh);
+        
+        iter = iter + 1;
+        if iter > 100
+            K = 3;
+        end
+        if iter > 1e6
+            error('Dielectric constant not converging')
+        end
     end
 end
 

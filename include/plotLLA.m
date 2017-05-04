@@ -3,7 +3,7 @@ function plotLLA(time, lla, target)
 % lla: lat/lon/alt vector
 % target: target location
 
-figure(1)
+figure
 set(gcf, 'units', 'normalized', 'outerposition', [0 0 1 1])
 
 subplot(2,2,1)

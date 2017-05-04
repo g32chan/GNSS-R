@@ -7,14 +7,26 @@ function q = qvec(R, T, S)
 c = 299792458;
 f = 1.57542e9;
 
-q = zeros(size(S.data, 1), 3);
+q = zeros(size(R.data, 1), 3);
 
-for i = 1:size(S.data, 1)
-    t = S.data(i, S.header.time);
-    idx = R.data(:, R.header.time) == t;
+prn = S.data(1, S.header.prn);
+time = R.data(:, R.header.time);
+for t = 1:length(time)
+    idx = R.data(:, R.header.time) == time(t);
     Rtemp = R.data(idx, R.header.X:R.header.Z);
-    Ttemp = T.data(i, T.header.X:T.header.Z);
-    Stemp = S.data(i, S.header.X:S.header.Z);
+    if isempty(Rtemp)
+        continue
+    end
+    idx = T.data(:, T.header.time) == time(t) & T.data(:, T.header.prn) == prn;
+    Ttemp = T.data(idx, T.header.X:T.header.Z);
+    if isempty(Ttemp)
+        continue
+    end
+    idx = S.data(:, S.header.time) == time(t);
+    Stemp = S.data(idx, S.header.X:S.header.Z);
+    if isempty(Stemp)
+        continue
+    end
     
     % convert to local coordinates
     Rl = ecef2enu(Rtemp, Stemp);
@@ -24,8 +36,10 @@ for i = 1:size(S.data, 1)
     RS_unit = (Rl-Sl)./norm(Rl-Sl);
     TS_unit = (Tl-Sl)./norm(Tl-Sl);
 
-    q(i,:) = 2*pi*f/c*(TS_unit+RS_unit);
+    q(t,:) = 2*pi*f/c*(TS_unit+RS_unit);
 end
+
+q(any(q == 0, 2), :) = [];
 
 end
 

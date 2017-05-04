@@ -12,7 +12,7 @@ R_lla = ecef2lla(Rxyz);
 % P = [S_lla(:,2), S_lla(:,1), brcs];
 % P(brcs < 10, :) = [];
 
-figure(2); hold on
+figure; hold on
 set(gcf, 'units', 'normalized', 'outerposition', [0 0 1 1])
 % xlim([-80.55,-80.53])
 % ylim([43.472,43.482])

@@ -1,5 +1,6 @@
-%% Configure
 clear; close all; clc
+
+%% Configure
 type = 'Ocean';
 dirFile = [type ' Dir'];
 refFile = [type ' Ref'];
@@ -10,8 +11,6 @@ for sec = 1:t
     %% Direct
     data = load(['Daaxa\' dirFile '\DaaxaOut' sprintf('%2d', sec) '.dat']);
     data = data(:,6:end);
-    % figure
-    % surf(data)
 
     %% Signal Power
     n = size(data,1);
@@ -22,19 +21,19 @@ for sec = 1:t
     end
 
     %% Noise Power
+    Ps = zeros(n,1);
     Pn = zeros(n,1);
     for i = 1:n
-        Pn(i) = mean(data(i,1:peak(i,2)-5));
+        Pn(i) = mean(data(i,2:peak(i,2)-20));
+        Ps(i) = mean(data(i,peak(i,2)-2:peak(i,2)+2));
     end
-
-    snr = pow2db((peak(:,1)-Pn)./Pn);
+    snr = pow2db((Ps-Pn)./Pn);
+%     snr = pow2db((peak(:,1)-Pn)./Pn);
     dir(sec) = mean(snr);
     
     %% Reflected
     data = load(['Daaxa\' refFile '\DaaxaOut' sprintf('%2d', sec) '.dat']);
     data = data(:,6:end);
-    % figure
-    % surf(data)
 
     %% Signal Power
     n = size(data,1);
@@ -45,12 +44,14 @@ for sec = 1:t
     end
 
     %% Noise Power
+    Ps = zeros(n,1);
     Pn = zeros(n,1);
     for i = 1:n
-        Pn(i) = mean(data(i,1:peak(i,2)-5));
+        Pn(i) = mean(data(i,2:peak(i,2)-20));
+        Ps(i) = mean(data(i,peak(i,2)-2:peak(i,2)+2));
     end
-
-    snr = pow2db((peak(:,1)-Pn)./Pn);
+    snr = pow2db((Ps-Pn)./Pn);
+%     snr = pow2db((peak(:,1)-Pn)./Pn);
     ref(sec) = mean(snr);
 end
 

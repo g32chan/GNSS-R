@@ -29,6 +29,10 @@ end
 
 fclose(fid);
 
+if exist('obs', 'var') == 0
+    error('File empty')
+end
+
 out.data = obs;
 for i = 1:length(header)
     out.header.(header{i}) = i;

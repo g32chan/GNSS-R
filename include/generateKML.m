@@ -3,6 +3,11 @@ function generateKML(filename, S)
 % S: specular data
 
 fprintf('Generating KML file...')
+
+prn = S.data(1,S.header.prn);
+prnStr = ['_' num2str(prn)];
+filename = insertBefore(filename, '.kml', prnStr);
+
 brcs = pow2db(S.data(:,S.header.brcs));
 Sxyz = S.data(:,S.header.X:S.header.Z);
 S_lla = ecef2lla(Sxyz);

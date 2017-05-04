@@ -1,5 +1,6 @@
-function out = navParse(filename)
+function out = navParse(filename, time)
 % filename: SiRF navigation data filename
+% time: Time vector to interpolate
 % out: Output data
 
 %% Import data
@@ -15,12 +16,7 @@ out.data(:, out.header.GPSWeek) = out.data(:, out.header.GPSWeek) + 1024;
 out.data(:, out.header.ToW) = out.data(:, out.header.ToW) / 100;
 
 %% Interpolate missing data
-time = unique(out.data(:, out.header.ToW));
-first = min(time);
-last = max(time);
-timevec = (first:1:last)';
-temp = interp1(time, out.data(:, out.header.X:out.header.GPSWeek), timevec, 'pchip');
-out.data = [temp timevec];
+out.data = interp1(out.data(:, out.header.ToW), out.data, time, 'pchip');
 
 fprintf('Done\n')
 

@@ -9,7 +9,7 @@ S_lla = ecef2lla(Sxyz);
 Rxyz = R.data(:, R.header.X:R.header.Z);
 R_lla = ecef2lla(Rxyz);
 
-figure(3); hold on
+figure; hold on
 % xlim([-80.55, -80.53])
 % ylim([43.472, 43.482])
 xlim([min(S_lla(:, 2)) max(S_lla(:, 2))])

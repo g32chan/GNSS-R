@@ -1,14 +1,14 @@
-function [pos, dop] = leastSquarePos(satpos, obs, flag)
+function [pos, dop] = leastSquarePos(satpos, obs, method)
 % Modified from leastSquarePos.m by Kai Borre (2006)
 % Modified from Rcv_Pos_Compute.m by You Chong (2013)
 % satpos: satellite positions in ECEF
 % obs: pseudorange for each satellite
 % pos: receiver position in ECEF
 % dop: dilution of precision for receiver position
-% flag: implementation selection
+% method: implementation selection
 
 %% Calculate position and clock
-if flag
+if strcmp(method, 'Borre')
     % Kai Borre Implementation
     c = 299792458;              % Speed of light [m/s]
     omega = 7.2921151467e-5;	% Earth rotation rate [rad/s]
@@ -59,7 +59,7 @@ if flag
     pos = pos';
     
     Q = inv(A'*A);
-else
+elseif strcmp(method, 'Chong')
     % You Chong Implementation
     pos = zeros(1,3);
     clk = 0;

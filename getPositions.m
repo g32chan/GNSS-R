@@ -6,22 +6,17 @@ function [R, T, DOP] = getPositions(input, igs, clk)
 % T: Transmitter positions
 % DOP: Dilution of precision
 
+%% Check inputs
 if nargin < 3
     clk = [];
 end
 
+%% Initialize
 c = 299792458;
 
-header = input.header;
-try
-    id = header.Satellite;
-    gpst = header.GPSTime;
-catch
-    id = header.Identifier;
-    gpst = header.tow;
-end
-% pr = header.Pseudorange;
-pr = header.CarrierPhase;
+id = input.header.Satellite;
+gpst = input.header.GPSTime;
+pr = input.header.CarrierPhase;
 data = input.data;
 
 time = unique(data(:, gpst));
@@ -62,8 +57,8 @@ for i = 1:length(time)
     
     % Calculate receiver location
     prAdj = temp(:, pr) + satBias - clkBias;
-    [Rxyz(i, :), dop] = leastSquarePos(satpos, prAdj, 1);   % Use Borre
-%     [Rxyz(i, :), dop] = leastSquarePos(satpos, prAdj, 0);   % Use Chong
+    [Rxyz(i, :), dop] = leastSquarePos(satpos, prAdj, 'Borre');   % Use Borre
+%     [Rxyz(i, :), dop] = leastSquarePos(satpos, prAdj, 'Chong');   % Use Chong
     
     % Check DOP
     DOP(i, :) = dop;
@@ -81,19 +76,20 @@ Rxyzb = interp1(time, Rxyz, timevec, 'pchip');
 DOP = interp1(time, DOP, timevec, 'pchip');
 
 %% Prepare output
-R.data = [round(timevec) Rxyzb];
 R.header.time = 1;
 R.header.X = 2;
 R.header.Y = 3;
 R.header.Z = 4;
 R.header.B = 5;
+R.data = [round(timevec) Rxyzb];
 
-T.data = [round(data(:, gpst)) data(:, id) Txyz];
 T.header.time = 1;
 T.header.prn = 2;
 T.header.X = 3;
 T.header.Y = 4;
 T.header.Z = 5;
+T.data = [round(data(:, gpst)) data(:, id) Txyz];
+
 fprintf('Done\n')
 
 end

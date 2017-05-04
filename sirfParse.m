@@ -1,5 +1,6 @@
-function out = sirfParse(filename)
+function out = sirfParse(filename, avg)
 % filename: SiRF file name
+% avg: average CNR flag
 % out: Output data
 
 %% Import data
@@ -34,10 +35,14 @@ for i = 1:length(GLONASS)
 end
 
 %% Average non-zero CNRs
-data(mode(data(:,start:fin),2)==0,:) = [];
-CNRs = data(:,start:fin);
-CNRs(CNRs==0) = NaN;
-cnr = mean(CNRs,2,'omitnan');
+if avg
+    data(mode(data(:,start:fin),2)==0,:) = [];
+    CNRs = data(:,start:fin);
+    CNRs(CNRs==0) = NaN;
+    cnr = mean(CNRs,2,'omitnan');
+else
+    cnr = smoothCNR(data, header);
+end
 data(:,start:fin) = [];
 data = [data cnr];
 for i = 1:10
